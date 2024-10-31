@@ -36,37 +36,40 @@ class MainActivity : ComponentActivity() {
                 val topBarTitle = remember { mutableStateOf("1 сезон") }
                 val drawerState = rememberDrawerState(DrawerValue.Closed)
                 val scope = rememberCoroutineScope()
-                val mainList= remember { mutableStateOf(getListItemsByIndex(0,this))
-                }
+                val mainList = remember { mutableStateOf(getListItemsByIndex(0, this)) }
+                // Состояние для выбранного индекса
+                val selectedIndex = remember { mutableStateOf(0) }
+
                 ModalNavigationDrawer(
                     drawerState = drawerState,
                     drawerContent = {
                         ModalDrawerSheet {
-                            DrawerMenu(){ event ->
-                                when(event) {
-                                    is DrawerEvents.OnItemClick -> {
-                                        topBarTitle.value=event.title
-                                        mainList.value= getListItemsByIndex(
-                                            event.index,this@MainActivity
-                                        )
+                            // Передаем onEvent и selectedIndex в DrawerMenu
+                            DrawerMenu(
+                                onEvent = { event ->
+                                    when (event) {
+                                        is DrawerEvents.OnItemClick -> {
+                                            topBarTitle.value = event.title
+                                            mainList.value = getListItemsByIndex(event.index, this@MainActivity)
+                                            selectedIndex.value = event.index // Установить выбранный индекс
+                                        }
                                     }
-                                }
-                                scope.launch {
-                                    drawerState.close()
-                                }
-                            }
+                                    scope.launch {
+                                        drawerState.close()
+                                    }
+                                },
+                                selectedIndex = selectedIndex.value // Передаем selectedIndex
+                            )
                         }
                     },
                     content = {
                         Scaffold(
                             topBar = {
-                                MainTopBar(title = topBarTitle.value, drawerState
-                                = drawerState)
+                                MainTopBar(title = topBarTitle.value, drawerState = drawerState)
                             }
-                        ) {innerPadding ->
-                            LazyColumn(modifier=
-                            Modifier.padding(innerPadding).fillMaxSize()){
-                                items(mainList.value) {item ->
+                        ) { innerPadding ->
+                            LazyColumn(modifier = Modifier.padding(innerPadding).fillMaxSize()) {
+                                items(mainList.value) { item ->
                                     MainListItem(item = item)
                                 }
                             }

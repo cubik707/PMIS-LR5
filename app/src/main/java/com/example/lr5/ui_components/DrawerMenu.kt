@@ -27,7 +27,7 @@ import com.example.lr5.utils.DrawerEvents
 
 
 @Composable
-fun DrawerMenu(onEvent: (DrawerEvents) -> Unit) {
+fun DrawerMenu(onEvent: (DrawerEvents) -> Unit, selectedIndex: Int) {
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.backimage),
@@ -37,7 +37,8 @@ fun DrawerMenu(onEvent: (DrawerEvents) -> Unit) {
         )
         Column(modifier = Modifier.fillMaxSize()) {
             Header()
-            Body() {event->onEvent(event)}
+            // Передаем onEvent и selectedIndex в Body
+            Body(onEvent = onEvent, selectedIndex = selectedIndex)
         }
     }
 }
@@ -80,27 +81,29 @@ fun Header() {
 }
 
 @Composable
-fun Body(onEvent: (DrawerEvents) -> Unit) {
+fun Body(onEvent: (DrawerEvents) -> Unit, selectedIndex: Int) {
     val list = stringArrayResource(id = R.array.drawer_list)
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         itemsIndexed(list) { index, title ->
+            val isSelected = index == selectedIndex
             Card(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(3.dp),
-                colors = CardDefaults.cardColors(containerColor = BgTransp)
+                colors = CardDefaults.cardColors(containerColor = if (isSelected) MyPurple else BgTransp) // Изменить цвет фона
             ) {
                 Text(
                     text = title,
                     modifier = Modifier
                         .fillMaxSize()
                         .clickable {
-                            onEvent(DrawerEvents.OnItemClick(title,index))
+                            onEvent(DrawerEvents.OnItemClick(title, index))
                         }
                         .padding(10.dp)
                         .wrapContentWidth(),
                     fontWeight = FontWeight.Bold,
-                    fontSize=16.sp
+                    fontSize = 16.sp,
+                    color = if (isSelected) Color.White else Color.Black // Изменить цвет текста
                 )
             }
         }
