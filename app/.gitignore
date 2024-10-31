@@ -1,0 +1,67 @@
+# Gradle files
+.gradle/
+build/
+*/build/
+*.iml
+*.hprof
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# User-specific configurations
+
+.idea/
+*.ipr
+*.iws
+*.jks
+
+# Android Studio captures
+captures/
+
+# Misc
+*.log
+*.csv
+*.out
+*.apk
+*.ap_
+
+# Java class files
+*.class
+
+# Android Studio generated files
+*.dex
+*.jar
+*.war
+*.aar
+
+# Coverage files
+coverage/
+
+# Android NDK
+obj/
+
+# Gradle Wrapper
+gradle-wrapper.jar
+gradle-wrapper.properties
+
+# Kapt
+kapt/outputs/
+
+# External Libraries
+.externalNativeBuild/
+
+# IntelliJ
+.idea/modules.xml
+.idea/workspace.xml
+.idea/libraries
+.idea/assetWizardSettings.xml
+
+# Android Studio cache
+.cache/
+
+# Version control system files
+.vscode/
+
+# Other files
+*.swp
+.DS_Store
